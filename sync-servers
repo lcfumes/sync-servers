@@ -1,0 +1,23 @@
+SYNC_LOG=/var/log/rsync.log 
+
+SYNC_PARAMS=-Cravzp
+
+serverdirectory="/srv"
+ignorefolders=$serverdirectory"/backup/"
+
+echo "******************************" >> $SYNC_LOG
+date >> $SYNC_LOG
+echo "Inicio da sincronizacao" >> $SYNC_LOG
+
+diretorios=$(ls -d $serverdirectory/*)
+
+for dir in $diretorios
+do
+    if [ dir != $ignorefolders ] ; then
+        echo "----------------------------------" >> $SYNC_LOG
+        echo $dir >> $SYNC_LOG
+        echo rsync $SYNC_PARAMS --delete user@server:$dir $dir >> $SYNC_LOG 
+    fi
+done
+
+echo "Fim da sincronizacao" >> $SYNC_LOG
